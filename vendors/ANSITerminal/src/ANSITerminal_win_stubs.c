@@ -146,6 +146,15 @@ value ANSITerminal_pos(value vunit)
   SMALL_RECT w;
   SHORT x, y;
 
+  /* SET_CSBI("ANSITerminal.pos_cursor"); */
+  if (! csbiInfo) {
+    hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hStdout == INVALID_HANDLE_VALUE) {
+      raise_error("XXX", "Invalid stdout handle");
+    }
+    exn_of_error("XXX",
+                 ! GetConsoleScreenBufferInfo(hStdout, csbiInfo));
+  }
   exn_of_error("ANSITerminal.pos_cursor",
                ! GetConsoleScreenBufferInfo(hStdout, csbiInfo));
   w = csbiInfo->srWindow;
